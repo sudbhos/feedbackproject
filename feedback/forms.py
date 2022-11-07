@@ -2,18 +2,33 @@ from django import forms
 
 from django.core import validators
 
-def start_with_s(value):
-    # if value[0].lower() != "s" and \
-    if value.isalpha()!=True:
-        raise forms.ValidationError("Its start with alpha only.")
+# def start_with_s(value):
+#     # if value[0].lower() != "s" and \
+#     if value.isalpha()!=True:
+#         raise forms.ValidationError("Its start with alpha only.")
 
 class feedbackinfo(forms.Form):
-    name=forms.CharField(validators=[start_with_s])
+    name=forms.CharField()
     rollno=forms.IntegerField()
     email=forms.EmailField()
+    password=forms.CharField(widget=forms.PasswordInput)
+    rpassword=forms.CharField(widget=forms.PasswordInput)
     feedback=forms.CharField(widget=forms.Textarea, validators=[validators.MaxLengthValidator(20),validators.MinLengthValidator(10)])
 
+    def clean(self):
+        print("Total Validataion.")
+        cleaned_data = super().clean()
+        inputname = cleaned_data['name']
+        if len(inputname) < 9:
+            raise forms.ValidationError("Please enter the value more than 9")
+        inputrollno = cleaned_data["rollno"]
+        if len(str(inputrollno)) != 3:
+            raise forms.ValidationError("The lenght of file will 3 only.")
 
+        inputpassword=cleaned_data["password"]
+        inputrpassword=cleaned_data["rpassword"]
+        if inputpassword !=inputrpassword:
+            raise forms.ValidationError("Please enter the same password for both filed .")
 
 #user define valideter
     # def clean_name(self):
