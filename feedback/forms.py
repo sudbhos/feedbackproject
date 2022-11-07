@@ -3,8 +3,9 @@ from django import forms
 from django.core import validators
 
 def start_with_s(value):
-    if value[0].lower() != "s":
-        raise forms.ValidationError("Its start with 's'.")
+    # if value[0].lower() != "s" and \
+    if value.isalpha()!=True:
+        raise forms.ValidationError("Its start with alpha only.")
 
 class feedbackinfo(forms.Form):
     name=forms.CharField(validators=[start_with_s])
