@@ -2,8 +2,12 @@ from django import forms
 
 from django.core import validators
 
+def start_with_s(value):
+    if value[0].lower() != "s":
+        raise forms.ValidationError("Its start with 's'.")
+
 class feedbackinfo(forms.Form):
-    name=forms.CharField(validators=[validators.MinLengthValidator(4)])
+    name=forms.CharField(validators=[start_with_s])
     rollno=forms.IntegerField()
     email=forms.EmailField()
     feedback=forms.CharField(widget=forms.Textarea, validators=[validators.MaxLengthValidator(20),validators.MinLengthValidator(10)])
